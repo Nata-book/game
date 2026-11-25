@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Кликер чтеца</title>
+    <style>
+        body { font-family: 'Comic Sans MS', sans-serif; text-align: center; background: #f0f8ff; padding: 50px; }
+        #word { font-size: 80px; color: #2e8b57; cursor: pointer; user-select: none; padding: 20px; display: inline-block; }
+        #word:active { transform: scale(0.95); } /* Анимация нажатия */
+        #score { font-size: 30px; color: #333; }
+        #best { font-size: 20px; color: #888; }
+    </style>
+</head>
+<body>
+    <h1>Прочитай и кликни!</h1>
+    <div id="word">МАМА</div>
+    <p id="score">Счёт: 0</p>
+    <p id="best">Рекорд: 0</p>
+
+    <script>
+        let score = 0;
+        let best = localStorage.getItem('readingBest') || 0; // Загрузка рекорда
+        document.getElementById('best').innerText = 'Рекорд: ' + best;
+
+        const wordElement = document.getElementById('word');
+        const scoreElement = document.getElementById('score');
+
+        // Список слов для смены (можно заменить на слоги)
+        const words = ['МАМА', 'ПАПА', 'СОК', 'ДОМ', 'КОТ', 'ЛУНА'];
+
+        wordElement.addEventListener('click', () => {
+            score++;
+            scoreElement.innerText = 'Счёт: ' + score;
+            
+            // Меняем слово случайно
+            const randomIndex = Math.floor(Math.random() * words.length);
+            wordElement.innerText = words[randomIndex];
+
+            // Обновляем рекорд
+            if (score > best) {
+                best = score;
+                localStorage.setItem('readingBest', best); // Сохранение
+                document.getElementById('best').innerText = 'Рекорд: ' + best;
+            }
+        });
+    </script>
+</body>
+</html>
